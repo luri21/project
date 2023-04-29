@@ -1,11 +1,11 @@
-class Student:
-    def __init__(self, name, surfname, age ):
+
+
+class Ilur:
+    def init(self, name, list, ):
         self.name = name
-        self.surfname = surfname
-        self.age = age
+        self.list = list
+    def average(self):
+        print(f"Averege: {sum(self.list) / len(self.list)}")
 
-
-s1 = Student("Oleg","Havron",25)
-print(s1.name)
-print(s1.surfname)
-print(s1.age)
+s1 = Ilur("ilur", [9, 12, 10, 8 ,5 , 10 , 4 , 7])
+s1.average()
