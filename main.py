@@ -1,38 +1,23 @@
-class Person:
-    def __init__(self, name, age, gender):
+class Employee:
+    def __init__(self, name, age, salary, position):
         self.name = name
         self.age = age
-        self.gender = gender
+        self.salary = salary
+        self.position = position
 
+class Manager(Employee):
+    def __init__(self, name, age, salary, position, num_subordinates):
+        super().__init__(name, age, salary, position)
+        self.num_subordinates = num_subordinates
 
-class Student(Person):
-    def __init__(self, name, age, gender, student_id):
-        super().__init__(name, age, gender)
-        self.student_id = student_id
+class Developer(Employee):
+    def __init__(self, name, age, salary, position, programming_language):
+        super().__init__(name, age, salary, position)
+        self.programming_language = programming_language
+        manager = Manager("John Doe", 40, 50000, "Manager", 10)
+        print(manager.name)
+        print(manager.num_subordinates)
 
-    def say_hello(self):
-        print(f"Hello, my name is {self.name} and my student ID is {self.student_id}")
-
-
-class Teacher(Person):
-    def __init__(self, name, age, gender, subject):
-        super().__init__(name, age, gender)
-        self.subject = subject
-
-    def say_hello(self):
-        print(f"Hello, my name is {self.name} and I teach {self.subject}")
-
-
-class Engineer(Person):
-    def __init__(self, name, age, gender, company):
-        super().__init__(name, age, gender)
-        self.company = company
-
-    def say_hello(self):
-        print(f"Hello, my name is {self.name} and I work at {self.company}")
-student = Student("Дем'ян", 12, "male", "S12345")
-teacher = Teacher("Ігор", 24, "female", "Python")
-engineer = Engineer("Peter", 40, "male", "Google")
-student.say_hello()
-teacher.say_hello()
-engineer.say_hello()
+        developer = Developer("Jane Smith", 30, 60000, "Developer", "Python")
+        print(developer.name)
+        print(developer.programming_language)
