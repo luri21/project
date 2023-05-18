@@ -1,36 +1,44 @@
-class Human:
-    def __init__(self, name):
+class Employee:
+    def __init__(self, name, age, salary, position):
         self.name = name
+        self.age = age
+        self.salary = salary
+        self.position = position
 
-class Auto:
-    def __init__(self, brand, capacity):
-        self.brand = brand
-        self.capacity = capacity
-        self.passengers = []
+    def display_info(self):
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")
+        print(f"Salary: {self.salary}")
+        print(f"Position: {self.position}")
 
-    def add_passenger(self, human):
-        if len(self.passengers) < self.capacity:
-            self.passengers.append(human)
-            print(f"{human.name} сів у машину {self.brand}")
-        else:
-            print(f"Неможливо додати {human.name}. Машинa {self.brand} вже повна!")
+class Manager(Employee):
+    def __init__(self, name, age, salary, position, subordinates):
+        super().__init__(name, age, salary, position)
+        self.subordinates = subordinates
 
-    def print_passengers(self):
-        if self.passengers:
-            print(f"В машині {self.brand} такі пасажири:")
-            for passenger in self.passengers:
-                print(passenger.name)
-        else:
-            print(f"В машині {self.brand} немає пасажирів. Всі втікли!")
+    def display_info(self):
+        super().display_info()
+        print(f"Number of subordinates: {self.subordinates}")
 
-car = Auto('Nissan GTR', 3)
-car.add_passenger(Human("Oleg"))
-car.add_passenger(Human("Igor"))
-car.add_passenger(Human("Vlad"))
-car.add_passenger(Human("Valentyn"))
-car.print_passengers()
+class Developer(Employee):
+    def __init__(self, name, age, salary, position, programming_language):
+        super().__init__(name, age, salary, position)
+        self.programming_language = programming_language
 
+    def display_info(self):
+        super().display_info()
+        print(f"Programming Language: {self.programming_language}")
 
+# Приклад використання
+employee = Employee("John Smith", 30, 5000, "Employee")
+employee.display_info()
 
+print("-----")
 
+manager = Manager("Alice Johnson", 40, 8000, "Manager", 5)
+manager.display_info()
 
+print("-----")
+
+developer = Developer("Michael Davis", 35, 6000, "Developer", "Python")
+developer.display_info()
