@@ -1,47 +1,36 @@
-import datetime
+class Human:
+    def __init__(self, name):
+        self.name = name
 
-def log_event(event):
-    timestamp = datetime.datetime.now()
-    print(f"[{timestamp}] {event}")
+class Auto:
+    def __init__(self, brand, capacity):
+        self.brand = brand
+        self.capacity = capacity
+        self.passengers = []
 
-def register_account():
-    username = input("Введіть ім'я користувача: ")
-    password = input("Введіть пароль: ")
+    def add_passenger(self, human):
+        if len(self.passengers) < self.capacity:
+            self.passengers.append(human)
+            print(f"{human.name} сів у машину {self.brand}")
+        else:
+            print(f"Неможливо додати {human.name}. Машинa {self.brand} вже повна!")
+
+    def print_passengers(self):
+        if self.passengers:
+            print(f"В машині {self.brand} такі пасажири:")
+            for passenger in self.passengers:
+                print(passenger.name)
+        else:
+            print(f"В машині {self.brand} немає пасажирів. Всі втікли!")
+
+car = Auto('Nissan GTR', 3)
+car.add_passenger(Human("Oleg"))
+car.add_passenger(Human("Igor"))
+car.add_passenger(Human("Vlad"))
+car.add_passenger(Human("Valentyn"))
+car.print_passengers()
 
 
-    log_event(f"Зареєстровано новий аккаунт: {username}")
 
 
 
-def login():
-    username = input("Введіть ім'я користувача: ")
-    password = input("Введіть пароль: ")
-
-
-
-    if is_valid_credentials(username, password):
-        log_event(f"Увійшов на аккаунт: {username}")
-        print("Успішний вхід в аккаунт")
-    else:
-        log_event(f"Невдала спроба входу на аккаунт: {username}")
-        print("Неправильне ім'я користувача або пароль")
-
-def is_valid_credentials(username, password):
-
-    return False
-
-while True:
-    print("1. Вхід в аккаунт")
-    print("2. Реєстрація аккаунта")
-    print("3. Вийти")
-
-    choice = input("Виберіть опцію: ")
-
-    if choice == "1":
-        login()
-    elif choice == "2":
-        register_account()
-    elif choice == "3":
-        break
-    else:
-        print("Неправильний вибір")
