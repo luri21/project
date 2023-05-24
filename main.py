@@ -1,44 +1,58 @@
-class Employee:
-    def __init__(self, name, age, salary, position):
-        self.name = name
-        self.age = age
-        self.salary = salary
-        self.position = position
+import sqlite3
 
-    def display_info(self):
-        print(f"Name: {self.name}")
-        print(f"Age: {self.age}")
-        print(f"Salary: {self.salary}")
-        print(f"Position: {self.position}")
 
-class Manager(Employee):
-    def __init__(self, name, age, salary, position, subordinates):
-        super().__init__(name, age, salary, position)
-        self.subordinates = subordinates
+conn = sqlite3.connect('products.db')
+cursor = conn.cursor()
 
-    def display_info(self):
-        super().display_info()
-        print(f"Number of subordinates: {self.subordinates}")
+cursor.execute('''CREATE TABLE IF NOT EXISTS Products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    price REAL,
+                    quantity INTEGER
+                )''')
 
-class Developer(Employee):
-    def __init__(self, name, age, salary, position, programming_language):
-        super().__init__(name, age, salary, position)
-        self.programming_language = programming_language
+def add_product(name, price, quantity):
 
-    def display_info(self):
-        super().display_info()
-        print(f"Programming Language: {self.programming_language}")
+    cursor.execute("INSERT INTO Products (name, price, quantity) VALUES (?, ?, ?)", (name, price, quantity))
+    conn.commit()
+    print("Товар додано успішно.")
 
-# Приклад використання
-employee = Employee("John Smith", 30, 5000, "Employee")
-employee.display_info()
+def delete_product(product_id):
 
-print("-----")
+    cursor.execute("DELETE FROM Products WHERE id = ?", (product_id,))
+    conn.commit()
+    print("Товар видалено успішно.")
 
-manager = Manager("Alice Johnson", 40, 8000, "Manager", 5)
-manager.display_info()
+def edit_product(product_id, new_name, new_price, new_quantity):
 
-print("-----")
+    cursor.execute("UPDATE Products SET name = ?, price = ?, quantity = ? WHERE id = ?", (new_name, new_price, new_quantity, product_id))
+    conn.commit()
+    print("Товар відредаговано успішно.")
 
-developer = Developer("Michael Davis", 35, 6000, "Developer", "Python")
-developer.display_info()
+def view_products():
+
+    cursor.execute("SELECT * FROM Products")
+    products = cursor.fetchall()
+    if len(products) > 0:
+        for product in products:
+            print(f"ID: {product[0]}, Назва: {product[1]}, Ціна: {product[2]}, Кількість: {product[3]}")
+    else:
+        print("Список товарів порожній.")
+
+while True:
+    print("\nМеню:")
+    print("1. Додати товар")
+    print("2. Видалити товар")
+    print("3. Редагувати товар")
+    print("4. Переглянути список товарів")
+    print("5. Вийти з програми")
+
+    choice = input("Виберіть дію (1-5): ")
+
+    if choice == '1':
+        name = input("Введіть назву товару: ")
+        price = float(input("Введіть ціну товару: "))
+        quantity = int(input("Введіть кількість товару: "))
+        add_product(name, price, quantity)
+    elif choice == '2':
+        product_id = int(input("Введіть ID товар"))
