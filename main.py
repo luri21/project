@@ -14,6 +14,9 @@ cursor.execute('''
 ''')
 conn.commit()
 
+
+
+
 def add_product(name, price):
     cursor.execute('INSERT INTO products (name, price) VALUES (?, ?)', (name, price))
     conn.commit()
@@ -41,6 +44,21 @@ def view_products():
 print('Ласкаво просимо до адміністративної сторони магазину!')
 
 while True:
+    def login():
+        password = input('Введіть пароль для входу: ')
+        if password == '123':
+            print('Успішний вхід!')
+            return True
+        else:
+            print('Невірний пароль.')
+            return False
+
+
+    print('Ласкаво просимо до адміністративної сторони магазину!')
+
+
+    if not login():
+            continue
     print('\nМеню:')
     print('1. Переглянути товари')
     print('2. Додати товар')
@@ -49,6 +67,9 @@ while True:
     print('5. Вийти')
     print('6. ?')
     choice = input('Виберіть дію: ')
+
+
+
 
     if choice == '1':
         view_products()
@@ -77,3 +98,11 @@ while True:
 
 cursor.close()
 conn.close()
+
+
+
+
+
+
+
+
