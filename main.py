@@ -1,74 +1,79 @@
+
+
 import sqlite3
 
-
-conn = sqlite3.connect('products.db')
+conn = sqlite3.connect('store.db')
 cursor = conn.cursor()
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Products (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT,
-                    price REAL,
-                    quantity INTEGER
-                )''')
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        price REAL NOT NULL
+    )
+''')
+conn.commit()
 
-def add_product(name, price, quantity):
-
-    cursor.execute("INSERT INTO Products (name, price, quantity) VALUES (?, ?, ?)", (name, price, quantity))
+def add_product(name, price):
+    cursor.execute('INSERT INTO products (name, price) VALUES (?, ?)', (name, price))
     conn.commit()
-    print("Товар додано успішно.")
+    print('Товар успішно додано.')
 
 def delete_product(product_id):
-
-    cursor.execute("DELETE FROM Products WHERE id = ?", (product_id,))
+    cursor.execute('DELETE FROM products WHERE id = ?', (product_id,))
     conn.commit()
-    print("Товар видалено успішно.")
+    print('Товар успішно видалено.')
 
-def edit_product(product_id, new_name, new_price, new_quantity):
 
-    cursor.execute("UPDATE Products SET name = ?, price = ?, quantity = ? WHERE id = ?", (new_name, new_price, new_quantity, product_id))
+def edit_product(product_id, new_name, new_price):
+    cursor.execute('UPDATE products SET name = ?, price = ? WHERE id = ?', (new_name, new_price, product_id))
     conn.commit()
-    print("Товар відредаговано успішно.")
+    print('Товар успішно відредаговано.')
 
 def view_products():
-
-    cursor.execute("SELECT * FROM Products")
+    cursor.execute('SELECT * FROM products')
     products = cursor.fetchall()
-    if len(products) > 0:
-        for product in products:
-            print(f"ID: {product[0]}, Назва: {product[1]}, Ціна: {product[2]}, Кількість: {product[3]}")
-    else:
-        print("Список товарів порожній.")
+    print('Товари:')
+    for product in products:
+        print(f'ID: {product[0]}, Назва: {product[1]}, Ціна: {product[2]}')
+
+
+print('Ласкаво просимо до адміністративної сторони магазину!')
 
 while True:
-    print("\nМеню:")
-    print("1. Додати товар")
-    print("2. Видалити товар")
-    print("3. Редагувати товар")
-    print("4. Переглянути список товарів")
-    print("5. Вийти з програми")
-
-    choice = input("Виберіть дію (1-5): ")
+    print('\nМеню:')
+    print('1. Переглянути товари')
+    print('2. Додати товар')
+    print('3. Видалити товар')
+    print('4. Редагувати товар')
+    print('5. Вийти')
+    print('6. ?')
+    choice = input('Виберіть дію: ')
 
     if choice == '1':
-        name = input("Введіть назву товару: ")
-        price = float(input("Введіть ціну товару: "))
-        quantity = int(input("Введіть кількість товару: "))
-        add_product(name, price, quantity)
-    elif choice == '2':
-        product_id = int(input("Введіть ID товару: "))
-        delete_product(product_id)
-    elif choice == '3':
-        product_id = int(input("Введіть ID товару: "))
-        new_name = input("Введіть нову назву товару: ")
-        new_price = float(input("Введіть нову ціну товару: "))
-        new_quantity = int(input("Введіть нову кількість товару: "))
-        edit_product(product_id, new_name, new_price, new_quantity)
-    elif choice == '4':
         view_products()
+    elif choice == '2':
+        name = input('Введіть назву товару: ')
+        price = float(input('Введіть ціну товару: '))
+        add_product(name, price)
+    elif choice == '3':
+        product_id = input('Введіть ID товару, який потрібно видалити: ')
+        delete_product(product_id)
+    elif choice == '4':
+        product_id = input('Введіть ID товару, який потрібно редагувати: ')
+        new_name = input('Введіть нову назву товару: ')
+        new_price = float(input('Введіть нову ціну товару: '))
+        edit_product(product_id, new_name, new_price)
     elif choice == '5':
+        print('До побачення!')
         break
+    elif choice == '6':
+        product_id = input('Введіть ID товару, який потрібно редагувати: ')
+        new_name = input('Введіть нову назву товару: ')
+        new_price = float(input('Введіть нову ціну товару: '))
+        edit_product(product_id, new_name, new_price)
     else:
-        print("Неправильнийkpbvb  вибір. Спробуйте ще раз.")
+        print('Невірний вибір. Спробуйте ще раз.')
 
-import sqlite3
-
+cursor.close()
+conn.close()
