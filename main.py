@@ -55,4 +55,20 @@ while True:
         quantity = int(input("Введіть кількість товару: "))
         add_product(name, price, quantity)
     elif choice == '2':
-        product_id = int(input("Введіть ID товар"))
+        product_id = int(input("Введіть ID товару: "))
+        delete_product(product_id)
+    elif choice == '3':
+        product_id = int(input("Введіть ID товару: "))
+        new_name = input("Введіть нову назву товару: ")
+        new_price = float(input("Введіть нову ціну товару: "))
+        new_quantity = int(input("Введіть нову кількість товару: "))
+        edit_product(product_id, new_name, new_price, new_quantity)
+    elif choice == '4':
+        view_products()
+    elif choice == '5':
+        break
+    else:
+        print("Неправильнийkpbvb  вибір. Спробуйте ще раз.")
+
+import sqlite3
+
